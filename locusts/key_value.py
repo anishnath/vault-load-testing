@@ -4,7 +4,7 @@ import sys
 import os
 import random
 
-from locust import HttpLocust, task
+from locust import HttpUser, task
 
 sys.path.append(os.getcwd())
 import common
@@ -14,9 +14,12 @@ from locusts import VaultTaskSet, VaultLocust
 
 class KeyValueTasks(VaultTaskSet):
 
+
+
     def __init__(self, parent):
         super().__init__(parent)
         self.kv_version = 1
+
 
     def on_start(self):
         self.kv_version = common.get_kv_version(client=self.client)
@@ -59,7 +62,7 @@ class KeyValueTasks(VaultTaskSet):
 
 
 class KeyValueLocust(VaultLocust):
-    task_set = KeyValueTasks
-    weight = 3
-    min_wait = 5000
-    max_wait = 10000
+    task = [KeyValueTasks]
+    # weight = 3
+    # min_wait = 5000
+    # max_wait = 10000
