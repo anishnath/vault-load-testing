@@ -1,19 +1,20 @@
-from locust import TaskSet, HttpLocust
-from locust.clients import ResponseContextManager, HttpSession, RequestException, events, CatchResponseError
+from locust import TaskSet, HttpUser
+from locust.clients import ResponseContextManager, HttpSession, RequestException, CatchResponseError
 import time
 
 import os
 import json
 
 
-class VaultLocust(HttpLocust):
+class VaultLocust(HttpUser):
 
     token = None
     testdata = None
+    abstract = True
 
-    def __init__(self):
-        super().__init__()
-        self.client = VaultSession(base_url=self.host)
+    def __init__(self,parent):
+        super().__init__(parent)
+        self.client = VaultSession(base_url=self.host,request_event=self.client.request_event, user=self)
 
     def setup(self):
         with open('testdata.json', 'r') as f:
