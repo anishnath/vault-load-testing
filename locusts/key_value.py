@@ -62,7 +62,7 @@ class KeyValueTasks(VaultTaskSet):
 
 
 class KeyValueLocust(VaultLocust):
-    task = [KeyValueTasks]
+    tasks = [KeyValueTasks]
     # weight = 3
     # min_wait = 5000
     # max_wait = 10000
